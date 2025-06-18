@@ -25,7 +25,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            // Collect validation errors
+
             Map<String, String> errors = new HashMap<>();
             for (FieldError error : bindingResult.getFieldErrors()) {
                 errors.put(error.getField(), error.getDefaultMessage());
@@ -37,7 +37,6 @@ public class UserController {
             User user = userService.createUser(userDto.getName(), userDto.getEmail());
             return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
         } catch (IllegalArgumentException e) {
-            // Handle service-layer validation errors (e.g., blank inputs)
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
